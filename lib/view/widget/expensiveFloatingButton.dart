@@ -45,7 +45,7 @@ class ExpensiveFloatingButton extends StatelessWidget {
                 height: 50,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(12.0),
                   // color: primaryColor
                   gradient: LinearGradient(
                       colors: const [primaryColor, secondaryColor],

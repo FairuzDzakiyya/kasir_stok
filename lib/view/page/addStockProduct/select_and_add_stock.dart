@@ -42,36 +42,36 @@ class _SelectAndAddStockProductState extends State<SelectAndAddStockProduct> {
   }
 
   Future<void> saveSelectedProductStock() async {
-  final DatabaseService databaseService = DatabaseService.instance;
-  String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    final DatabaseService databaseService = DatabaseService.instance;
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-  List<Map<String, dynamic>> stockAdditions = [];
+    List<Map<String, dynamic>> stockAdditions = [];
 
-  for (var product in selectedProductStock) {
-    int amount = productAmounts[product.productId.toString()] ?? 0;
-    String note = noteControllers[product.productId.toString()]?.text ?? '';
+    for (var product in selectedProductStock) {
+      int amount = productAmounts[product.productId.toString()] ?? 0;
+      String note = noteControllers[product.productId.toString()]?.text ?? '';
 
-    if (amount > 0) {
-      stockAdditions.add({
-        'stock_addition_name': product.productName,
-        'stock_addition_date': formattedDate,
-        'stock_addition_amount': amount,
-        'stock_addition_note': note.isNotEmpty ? note : 'Penambahan stok otomatis',
-        'stock_addition_product_id': product.productId,
-      });
+      if (amount > 0) {
+        stockAdditions.add({
+          'stock_addition_name': product.productName,
+          'stock_addition_date': formattedDate,
+          'stock_addition_amount': amount,
+          'stock_addition_note':
+              note.isNotEmpty ? note : 'Penambahan stok otomatis',
+          'stock_addition_product_id': product.productId,
+        });
+      }
+    }
+
+    if (stockAdditions.isNotEmpty) {
+      for (var stockData in stockAdditions) {
+        await databaseService.addProductStock(stockData);
+      }
+      print('Stok produk berhasil disimpan ke database!');
+    } else {
+      print('Tidak ada stok yang ditambahkan.');
     }
   }
-
-  if (stockAdditions.isNotEmpty) {
-    for (var stockData in stockAdditions) {
-      await databaseService.addProductStock(stockData);
-    }
-    print('Stok produk berhasil disimpan ke database!');
-  } else {
-    print('Tidak ada stok yang ditambahkan.');
-  }
-}
-
 
   Future<void> _updateJumlahStockProduct() async {
     final DatabaseService databaseService = DatabaseService.instance;
@@ -93,32 +93,33 @@ class _SelectAndAddStockProductState extends State<SelectAndAddStockProduct> {
           Column(
             children: [
               AppBarStock(
-              appBarText: "TAMBAH STOK PRODUK",
+                appBarText: "TAMBAH STOK PRODUK",
               ),
               Expanded(
-              child: selectedProductStock.isEmpty
-                ? NotFoundPage(
-                  title: "Belum ada produk yang dipilih!",
-                )
-                : ListView.builder(
-                  itemCount: selectedProductStock.length,
-                  itemBuilder: (context, index) {
-                    final productSelectedList = selectedProductStock[index];
-                    return StockCardScreen(
-  product: productSelectedList,
-  onAmountChanged: (amount) {
-    setState(() {
-      productAmounts[productSelectedList.productId.toString()] = amount;
-    });
-  },
-  noteController: noteControllers.putIfAbsent(
-    productSelectedList.productId.toString(),
-    () => TextEditingController(),
-  ),
-);
-
-                  },
-                  ),
+                child: selectedProductStock.isEmpty
+                    ? NotFoundPage(
+                        title: "Belum ada produk yang dipilih!",
+                      )
+                    : ListView.builder(
+                        itemCount: selectedProductStock.length,
+                        itemBuilder: (context, index) {
+                          final productSelectedList =
+                              selectedProductStock[index];
+                          return StockCardScreen(
+                            product: productSelectedList,
+                            onAmountChanged: (amount) {
+                              setState(() {
+                                productAmounts[productSelectedList.productId
+                                    .toString()] = amount;
+                              });
+                            },
+                            noteController: noteControllers.putIfAbsent(
+                              productSelectedList.productId.toString(),
+                              () => TextEditingController(),
+                            ),
+                          );
+                        },
+                      ),
               ),
             ],
           ),

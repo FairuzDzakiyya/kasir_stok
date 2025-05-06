@@ -390,7 +390,7 @@ class CustomTextField extends StatelessWidget {
           filled: true,
           fillColor: color ?? Colors.grey[200],
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(17),
             borderSide: BorderSide.none,
           ),
           suffixIcon: Icon(icon, color: Colors.grey[700]),

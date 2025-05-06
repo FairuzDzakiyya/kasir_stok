@@ -113,13 +113,13 @@ class CustomTextField extends StatelessWidget {
         suffixText: suffixText,
 
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(16.0),
             // set border to none
             borderSide: BorderSide.none),
 
         // If the Input is focused (clicked), the border color and border radius will change
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12.0),
+          borderRadius: BorderRadius.circular(18.0),
           borderSide: const BorderSide(
             // this color is from /utils/colors.dart
             color: primaryColor,

@@ -142,7 +142,7 @@ class _CardTransactionState extends State<CardTransaction> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
+                            borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         // Panggil fungsi untuk memilih produk baru
@@ -160,21 +160,27 @@ class _CardTransactionState extends State<CardTransaction> {
                       ),
                       Row(
                         children: [
-                          ElevatedButton(
+                          IconButton(
+                            icon: Icon(Icons.remove,
+                                color: Colors.blue[900],
+                                size: screenWidth * 0.06),
                             onPressed: decrement,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              minimumSize: const Size(40, 40),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            child: const Iconify(
-                              Ic.outline_minus,
-                              color: Colors.white,
-                              size: 14,
-                            ),
                           ),
+                          // ElevatedButton(
+                          //   onPressed: decrement,
+                          //   // style: ElevatedButton.styleFrom(
+                          //   //   backgroundColor: Colors.red,
+                          //   //   minimumSize: const Size(40, 40),
+                          //   //   shape: RoundedRectangleBorder(
+                          //   //     borderRadius: BorderRadius.circular(5),
+                          //   //   ),
+                          //   // ),
+                          //   child: const Iconify(
+                          //     Ic.outline_minus,
+                          //     color: Colors.white,
+                          //     size: 14,
+                          //   ),
+                          // ),
                           SizedBox(
                             width: 50,
                             child: TextField(
@@ -208,21 +214,27 @@ class _CardTransactionState extends State<CardTransaction> {
                               },
                             ),
                           ),
-                          ElevatedButton(
+                          IconButton(
+                            icon: Icon(Icons.add,
+                                color: Colors.blue[900],
+                                size: screenWidth * 0.06),
                             onPressed: increment,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green,
-                              minimumSize: const Size(40, 40),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            child: const Iconify(
-                              Ic.outline_plus,
-                              color: Colors.white,
-                              size: 14,
-                            ),
                           ),
+                          // ElevatedButton(
+                          //   onPressed: increment,
+                          //   style: ElevatedButton.styleFrom(
+                          //     backgroundColor: Colors.green,
+                          //     minimumSize: const Size(40, 40),
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(5),
+                          //     ),
+                          //   ),
+                          //   child: const Iconify(
+                          //     Ic.outline_plus,
+                          //     color: Colors.white,
+                          //     size: 14,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ],

@@ -126,6 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           children: const [
                             TextSpan(text: 'Selamat Datang\n'),
+                            const WidgetSpan(
+                              child: SizedBox(height: 45),
+                            ),
                             TextSpan(text: 'di '),
                             TextSpan(
                               text: 'Laris',
@@ -217,7 +220,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   begin: Alignment(0, 2),
                                   end: Alignment(-0, -2),
                                 ),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         child: ElevatedButton(
                           onPressed: _login,
@@ -228,7 +231,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: Colors.transparent,
                             shadowColor: Colors.transparent,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             padding: const EdgeInsets.symmetric(vertical: 10),
                           ),

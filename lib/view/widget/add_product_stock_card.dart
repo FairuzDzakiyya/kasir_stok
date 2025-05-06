@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kas_mini_flutter_app/model/product.dart';
+import 'package:gap/gap.dart';
 
 class StockCardScreen extends StatefulWidget {
   final Product product;
@@ -7,12 +8,12 @@ class StockCardScreen extends StatefulWidget {
   final Function(int amount)? onAmountChanged;
   final TextEditingController? noteController;
 
-
   const StockCardScreen({
     super.key,
     required this.product,
     this.initialQuantity = 0,
-    this.onAmountChanged, this.noteController,
+    this.onAmountChanged,
+    this.noteController,
   });
 
   @override
@@ -21,7 +22,6 @@ class StockCardScreen extends StatefulWidget {
 
 class _StockCardScreenState extends State<StockCardScreen> {
   late int amount;
-  
 
   @override
   void initState() {
@@ -39,7 +39,6 @@ class _StockCardScreenState extends State<StockCardScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -47,7 +46,7 @@ class _StockCardScreenState extends State<StockCardScreen> {
 
     return Container(
       margin: EdgeInsets.symmetric(
-        vertical: screenHeight * 0.01,
+        // vertical: screenHeight * 0.01,
         horizontal: screenWidth * 0.03,
       ),
       padding: EdgeInsets.all(screenWidth * 0.04),
@@ -81,32 +80,34 @@ class _StockCardScreenState extends State<StockCardScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Tombol - Jumlah + 
+              // Tombol - Jumlah +
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.remove, color: Colors.blue[900], size: screenWidth * 0.06),
+                    icon: Icon(Icons.remove,
+                        color: Colors.blue[900], size: screenWidth * 0.06),
                     onPressed: () => setAmount(amount - 1),
                   ),
                   SizedBox(
                     width: screenWidth * 0.1,
                     child: Center(
                       child: TextField(
-                      controller: TextEditingController(text: "$amount"),
-                      keyboardType: TextInputType.number,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: screenWidth * 0.045),
-                      onSubmitted: (value) {
-                        final int? newValue = int.tryParse(value);
-                        if (newValue != null) {
-                        setAmount(newValue);
-                        }
-                      },
+                        controller: TextEditingController(text: "$amount"),
+                        keyboardType: TextInputType.number,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: screenWidth * 0.045),
+                        onSubmitted: (value) {
+                          final int? newValue = int.tryParse(value);
+                          if (newValue != null) {
+                            setAmount(newValue);
+                          }
+                        },
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.add, color: Colors.blue[900], size: screenWidth * 0.06),
+                    icon: Icon(Icons.add,
+                        color: Colors.blue[900], size: screenWidth * 0.06),
                     onPressed: () => setAmount(amount + 1),
                   ),
                 ],
@@ -114,48 +115,50 @@ class _StockCardScreenState extends State<StockCardScreen> {
 
               // Catatan
               Container(
-  width: screenWidth * 0.35,
-  height: screenHeight * 0.05,
-  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-  decoration: BoxDecoration(
-    color: Colors.grey[200],
-    borderRadius: BorderRadius.circular(8),
-  ),
-  child: TextField(
-    controller: widget.noteController,
-    decoration: const InputDecoration(
-      border: InputBorder.none,
-      hintText: 'Catatan',
-      icon: Icon(Icons.notes, color: Colors.grey),
-      hintStyle: TextStyle(color: Colors.grey),
-    ),
-    style: TextStyle(fontSize: screenWidth * 0.035),
-  ),
-),
-
+                width: screenWidth * 0.35,
+                height: screenHeight * 0.05,
+                padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: TextField(
+                  controller: widget.noteController,
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Catatan',
+                    icon: Icon(Icons.notes, color: Colors.grey),
+                    hintStyle: TextStyle(color: Colors.grey),
+                  ),
+                  style: TextStyle(fontSize: screenWidth * 0.035),
+                ),
+              ),
             ],
           ),
 
           // Informasi Stok
+          const Gap(15),
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.03,
-              vertical: screenHeight * 0.015,
+              vertical: screenHeight * 0.020,
             ),
             decoration: BoxDecoration(
               color: Colors.blue[900],
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   "Stok sekarang: ${widget.product.productStock} ${widget.product.productUnit}",
-                  style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.03),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: screenWidth * 0.03),
                 ),
                 Text(
                   "Setelah ditambah: $newStock ${widget.product.productUnit}",
-                  style: TextStyle(color: Colors.white, fontSize: screenWidth * 0.03),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: screenWidth * 0.03),
                 ),
               ],
             ),

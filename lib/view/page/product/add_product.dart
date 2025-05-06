@@ -476,10 +476,10 @@ class _AddProductPageState extends State<AddProductPage> {
     if (productName.isEmpty ||
         productBarcode.isEmpty ||
         productBarcodeType.isEmpty ||
-        productStock.isEmpty ||
+        // productStock.isEmpty ||
         productHargaBeli.isEmpty ||
         productHargaJual.isEmpty ||
-        productSatuan.isEmpty ||
+        // productSatuan.isEmpty ||
         productCategory.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Semua field harus diisi!")),
