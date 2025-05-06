@@ -129,7 +129,6 @@ class _AddProductPageState extends State<AddProductPage> {
           image = croppedImage;
         });
       }
-
     } on PlatformException catch (e) {
       print("Error: $e");
     }
@@ -321,10 +320,13 @@ class _AddProductPageState extends State<AddProductPage> {
   void initState() {
     super.initState();
 
-    _productHargaBeliController.addListener(_calculateKeuntungan);
-    _productHargaBeliController.addListener(_calculatePersentaseKeuntungan);
-    _productHargaJualController.addListener(_calculateKeuntungan);
-    _productHargaJualController.addListener(_calculatePersentaseKeuntungan);
+    // _productHargaBeliController.addListener(_calculateKeuntungan);
+    // _productHargaBeliController.addListener(_calculatePersentaseKeuntungan);
+    // _productHargaJualController.addListener(_calculateKeuntungan);
+    // _productHargaJualController.addListener(_calculatePersentaseKeuntungan);
+
+    _productHargaBeliController.addListener(_calculateDariPersentase);
+    _lossController.addListener(_calculateDariPersentase);
   }
 
   @override
@@ -362,6 +364,21 @@ class _AddProductPageState extends State<AddProductPage> {
         hargaBeli != 0 ? (besarProfit / hargaBeli * 100) : 0;
     _lossController.text =
         '${NumberFormat.decimalPattern('id').format(persentaseKeuntungan)}%';
+  }
+
+  void _calculateDariPersentase() {
+    final hargaBeli =
+        int.tryParse(_productHargaBeliController.text.replaceAll('.', '')) ?? 0;
+    final persen =
+        double.tryParse(_lossController.text.replaceAll(',', '.')) ?? 0;
+
+    final keuntungan = (hargaBeli * persen / 100).round();
+    final hargaJual = hargaBeli + keuntungan;
+
+    _profitController.text =
+        NumberFormat.decimalPattern('id').format(keuntungan);
+    _productHargaJualController.text =
+        NumberFormat.decimalPattern('id').format(hargaJual);
   }
 
 //   void _createNewProduct() async {
@@ -476,8 +493,10 @@ class _AddProductPageState extends State<AddProductPage> {
         productName,
         productBarcode,
         productBarcodeType,
-        int.parse(productStock),
-        productSatuan,
+        // int.parse(productStock),
+        // productSatuan,
+        0,
+        '',
         int.parse(productSold),
         int.parse(productHargaBeli.replaceAll('.', '')),
         int.parse(productHargaJual.replaceAll('.', '')),
@@ -780,125 +799,179 @@ class _AddProductPageState extends State<AddProductPage> {
                           )
                         : const SizedBox.shrink(),
                     const Gap(15),
-                    const Text(
-                      "Stock",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    const Gap(10),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: CheckboxListTile(
-                        value: _isChecked,
-                        title: const Text(
-                          'Tanpa Stok',
-                          style: TextStyle(fontSize: 17),
-                        ),
-                        onChanged: _handleCheckboxChange,
-                        activeColor: primaryColor,
-                        // tileColor: Colors.grey[200],
-                        // Membuat checkbox berada di kiri judul, bukan di kanan.
-                        controlAffinity: ListTileControlAffinity.leading,
-                        checkboxShape: const CircleBorder(),
-                        // Fungsi ini akan dipanggil saat checkbox diubah nilainya.
-                        // Fungsi ini digunakan untuk mengubah nilai _isChecked menjadi true atau false.
-                        // Nilai _isChecked digunakan untuk menentukan apakah stok produk akan diinputkan atau tidak.
-                        // Jika _isChecked bernilai true, maka stok produk tidak akan diinputkan.
-                        // Jika _isChecked bernilai false, maka stok produk akan diinputkan.
-                      ),
-                    ),
-                    const Gap(15),
-                    AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder:
-                          (Widget child, Animation<double> animation) {
-                        return FadeTransition(opacity: animation, child: child);
-                      },
-                      child: !_isChecked
-                          ? CustomTextField(
-                              fillColor: Colors.white,
+                    // const Text(
+                    //   "Stock",
+                    //   style:
+                    //       TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    // ),
+                    // const Gap(10),
+                    // Container(
+                    //   decoration: BoxDecoration(
+                    //       color: Colors.white,
+                    //       borderRadius: BorderRadius.circular(10)),
+                    //   child: CheckboxListTile(
+                    //     value: _isChecked,
+                    //     title: const Text(
+                    //       'Tanpa Stok',
+                    //       style: TextStyle(fontSize: 17),
+                    //     ),
+                    //     onChanged: _handleCheckboxChange,
+                    //     activeColor: primaryColor,
+                    //     // tileColor: Colors.grey[200],
+                    //     // Membuat checkbox berada di kiri judul, bukan di kanan.
+                    //     controlAffinity: ListTileControlAffinity.leading,
+                    //     checkboxShape: const CircleBorder(),
+                    //     // Fungsi ini akan dipanggil saat checkbox diubah nilainya.
+                    //     // Fungsi ini digunakan untuk mengubah nilai _isChecked menjadi true atau false.
+                    //     // Nilai _isChecked digunakan untuk menentukan apakah stok produk akan diinputkan atau tidak.
+                    //     // Jika _isChecked bernilai true, maka stok produk tidak akan diinputkan.
+                    //     // Jika _isChecked bernilai false, maka stok produk akan diinputkan.
+                    //   ),
+                    // ),
+                    // const Gap(15),
+                    // AnimatedSwitcher(
+                    //   duration: const Duration(milliseconds: 300),
+                    //   transitionBuilder:
+                    //       (Widget child, Animation<double> animation) {
+                    //     return FadeTransition(opacity: animation, child: child);
+                    //   },
+                    //   child: !_isChecked
+                    //       ? CustomTextField(
+                    //           fillColor: Colors.white,
 
-                              key: ValueKey<bool>(_isChecked),
-                              // Menggunakan ValueKey untuk memastikan widget diperbarui ketika nilai _isChecked berubah.
-                              obscureText: false,
-                              hintText: "Stok",
-                              prefixIcon: const Icon(
-                                  Icons.shopping_cart_checkout_outlined),
-                              controller: _productStockController,
-                              maxLines: 1,
-                              keyboardType: TextInputType.number,
-                              suffixIcon: null,
-                            )
-                          : null, // Empty container when _isChecked is true
-                    ),
-                    if (!_isChecked) const Gap(15),
-                    const Text(
-                      "Satuan Produk",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    const Gap(10),
-                    CustomTextField(
-                      fillColor: Colors.white,
-                      hintText: "Satuan Produk",
-                      prefixIcon: const Icon(Icons.onetwothree),
-                      controller: _productSatuanController,
-                      maxLines: 1,
-                      obscureText: false,
-                      suffixIcon: null,
-                    ),
-                    const Gap(15),
-                    const Text(
-                      "Harga Beli",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    const Gap(10),
-                    CustomTextField(
-                      fillColor: Colors.white,
-                      hintText: "Harga Beli",
-                      prefixIcon: const Icon(Icons.money),
-                      controller: _productHargaBeliController,
-                      maxLines: 1,
-                      inputFormatter: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        currencyInputFormatter(),
+                    //           key: ValueKey<bool>(_isChecked),
+                    //           // Menggunakan ValueKey untuk memastikan widget diperbarui ketika nilai _isChecked berubah.
+                    //           obscureText: false,
+                    //           hintText: "Stok",
+                    //           prefixIcon: const Icon(
+                    //               Icons.shopping_cart_checkout_outlined),
+                    //           controller: _productStockController,
+                    //           maxLines: 1,
+                    //           keyboardType: TextInputType.number,
+                    //           suffixIcon: null,
+                    //         )
+                    //       : null, // Empty container when _isChecked is true
+                    // ),
+                    // if (!_isChecked) const Gap(15),
+                    // const Text(
+                    //   "Satuan Produk",
+                    //   style:
+                    //       TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    // ),
+                    // const Gap(10),
+                    // CustomTextField(
+                    //   fillColor: Colors.white,
+                    //   hintText: "Satuan Produk",
+                    //   prefixIcon: const Icon(Icons.onetwothree),
+                    //   controller: _productSatuanController,
+                    //   maxLines: 1,
+                    //   obscureText: false,
+                    //   suffixIcon: null,
+                    // ),
+                    // const Gap(15),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Harga Beli",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                              const Gap(10),
+                              CustomTextField(
+                                fillColor: Colors.white,
+                                hintText: "Harga Beli",
+                                prefixIcon: const Icon(Icons.money),
+                                controller: _productHargaBeliController,
+                                maxLines: 1,
+                                inputFormatter: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  currencyInputFormatter(),
+                                ],
+                                prefixText:
+                                    _productHargaBeliController.text.length <= 3
+                                        ? "Rp. "
+                                        : "Rp ",
+                                obscureText: false,
+                                suffixIcon: null,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Gap(5),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Harga Jual",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold),
+                              ),
+                              const Gap(10),
+                              CustomTextField(
+                                  fillColor: Colors.white,
+                                  hintText: "Harga Jual",
+                                  prefixIcon: const Icon(Icons.money),
+                                  controller: _productHargaJualController,
+                                  maxLines: 1,
+                                  prefixText:
+                                      _productHargaJualController.text.length <=
+                                              3
+                                          ? "Rp. "
+                                          : "Rp ",
+                                  obscureText: false,
+                                  suffixIcon: null,
+                                  keyboardType: TextInputType.number,
+                                  readOnly: true,
+                                  inputFormatter: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    currencyInputFormatter()
+                                  ]),
+                            ],
+                          ),
+                        ),
                       ],
-                      prefixText: _productHargaBeliController.text.length <= 3
-                          ? "Rp. "
-                          : "Rp ",
-                      obscureText: false,
-                      suffixIcon: null,
-                      keyboardType: TextInputType.number,
                     ),
-                    const Gap(15),
-                    const Text(
-                      "Harga Jual",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    const Gap(10),
-                    CustomTextField(
-                        fillColor: Colors.white,
-                        hintText: "Harga Jual",
-                        prefixIcon: const Icon(Icons.money),
-                        controller: _productHargaJualController,
-                        maxLines: 1,
-                        prefixText: _productHargaJualController.text.length <= 3
-                            ? "Rp. "
-                            : "Rp ",
-                        obscureText: false,
-                        suffixIcon: null,
-                        keyboardType: TextInputType.number,
-                        inputFormatter: [
-                          FilteringTextInputFormatter.digitsOnly,
-                          currencyInputFormatter()
-                        ]),
                     const Gap(15),
                     Row(
                       children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Persentase Keuntungan",
+                                style: TextStyle(
+                                    fontSize:
+                                        SizeHelper.Fsize_productProfit(context),
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const Gap(10),
+                              CustomTextField(
+                                fillColor: Colors.white,
+                                hintText: "Persentase Keuntungan",
+                                prefixIcon: null,
+                                controller: _lossController,
+                                maxLines: 1,
+                                obscureText: false,
+                                suffixIcon: null,
+                                keyboardType: TextInputType.number,
+                                readOnly: false,
+                                // inputFormatter: [currencyInputFormatter()]
+                                inputFormatter: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'^\d+\.?\d{0,2}')),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Gap(5),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -929,33 +1002,6 @@ class _AddProductPageState extends State<AddProductPage> {
                                 ],
                                 readOnly: true,
                               ),
-                            ],
-                          ),
-                        ),
-                        const Gap(5),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Persentase Keuntungan",
-                                style: TextStyle(
-                                    fontSize:
-                                        SizeHelper.Fsize_productProfit(context),
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const Gap(10),
-                              CustomTextField(
-                                  fillColor: Colors.white,
-                                  hintText: "Persentase Keuntungan",
-                                  prefixIcon: null,
-                                  controller: _lossController,
-                                  maxLines: 1,
-                                  obscureText: false,
-                                  suffixIcon: null,
-                                  keyboardType: TextInputType.number,
-                                  readOnly: true,
-                                  inputFormatter: [currencyInputFormatter()]),
                             ],
                           ),
                         ),
